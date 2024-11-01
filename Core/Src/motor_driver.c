@@ -17,22 +17,35 @@ int previousValue = 0;
 uint8_t steps = 52, divStep;
 volatile uint16_t setSpeed;
 
-void Soft_Start(int speed)
+void Smooth_Change_Speed(int speed)
 {
     if (speed > previousValue + steps)
     {
-        divStep = speed / steps;
+        setSpeed = previousValue;
+        divStep = (speed - previousValue) / steps;
         for (uint8_t i = 0; i < divStep; i++)
         {
-            delay(100);
+            delay(20);
             setSpeed += steps;
             TIM3->ARR = Set_Speed(setSpeed);
         }
-        // setSpeed = 0;
+        setSpeed = 0;
     }
-    else if(speed < previousValue){
-
+    else if (speed < previousValue + steps)
+    {
+        setSpeed = previousValue;
+        divStep = (previousValue - speed) / steps;
+        for (uint8_t i = 0; i < divStep; i++)
+        {
+            delay(20);
+            setSpeed += steps;
+            TIM3->ARR = Set_Speed(setSpeed);
+        }
+        setSpeed = 0;
     }
-    TIM3->ARR = Set_Speed(speed);
+    else
+    {
+        TIM3->ARR = Set_Speed(speed);
+    }
     previousValue = speed;
 }

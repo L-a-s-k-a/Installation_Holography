@@ -26,7 +26,7 @@ int main(void)
         // test++;
         
         // test = Set_Speed(speed * 2);
-        Soft_Start(speed * 2);
+        Smooth_Change_Speed(speed);
         // softStart = Soft_Start(speed * 2);
         
 

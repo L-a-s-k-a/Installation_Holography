@@ -15,4 +15,4 @@ typedef enum{
 // uint16_t MotorTickCount;
 
 float Set_Speed(float rpm);
-void Soft_Start(int speed);
+void Smooth_Change_Speed(int speed);
