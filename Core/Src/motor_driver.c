@@ -31,6 +31,8 @@ void Smooth_Change_Speed(int speed)
         }
         setSpeed = 0;
     }
+    //Не работает, исправить
+
     else if (speed < previousValue + steps)
     {
         setSpeed = previousValue;
