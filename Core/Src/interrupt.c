@@ -2,7 +2,7 @@
 
 // extern uint16_t GlobalTickCount, MotorTickCount; // extern - обозначает, что переменная будет объявленна в другом месте
 extern uint8_t BtnNum, TIMCount;
-uint16_t TickDelayCount, ARRView;
+uint16_t TickDelayCount;
 uint8_t FLAG_Delay;
 
 void SysTick_Handler(void)
@@ -10,7 +10,6 @@ void SysTick_Handler(void)
     // TickDelayCount++;
     GlobalTickCount++;
     if (FLAG_Delay) TickDelayCount++;
-    ARRView = TIM3->ARR;
 }
 
 void delay(int del){

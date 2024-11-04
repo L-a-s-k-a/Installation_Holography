@@ -1,53 +1,64 @@
 #include <motot_driver.h>
 
-float Set_Speed(float rpm)
-{
-    Parameters param;
-    param.FCPU = 180000000;
-    param.maxFreq = 500000;
-    param.rpsMax = 50;
-    param.coef = (param.FCPU * param.rpsMax * 60) / param.maxFreq;
+MotorCharacteristics motorCharacter;
+uint16_t ARRView;
 
-    return param.coef / rpm;
-    // Soft_Start(rpm);
-    // return param.FCPU / ((param.maxFreq * ((float)(rpm) / 60.0)) / param.rpsMax);
+void Motor_Init(float rpmMax, float freqMax, float rpsMax)
+{
+    motorCharacter.FCPU = 180000000.0;
+    motorCharacter.freqMax = freqMax;
+    motorCharacter.revPSMax = rpsMax;
+    motorCharacter.revPMMax = rpmMax;
+    motorCharacter.radPMMax = rpmMax * 2 * M_PI;
+    motorCharacter.radPSMax = rpsMax * 2 * M_PI;
 }
 
-int previousValue = 0;
-uint8_t steps = 52, divStep;
-volatile uint16_t setSpeed;
-
-void Smooth_Change_Speed(int speed)
+float Speed_Transformations(float value, char *mode)
 {
-    if (speed > previousValue + steps)
-    {
-        setSpeed = previousValue;
-        divStep = (speed - previousValue) / steps;
-        for (uint8_t i = 0; i < divStep; i++)
-        {
-            delay(20);
-            setSpeed += steps;
-            TIM3->ARR = Set_Speed(setSpeed);
-        }
-        setSpeed = 0;
-    }
-    //Не работает, исправить
+    if (mode == "RevPM")
+        motorCharacter.divisionFactor = (motorCharacter.FCPU * motorCharacter.revPMMax) / motorCharacter.freqMax;
+    if (mode == "RevPS")
+        motorCharacter.divisionFactor = (motorCharacter.FCPU * motorCharacter.revPSMax) / motorCharacter.freqMax;
+    if (mode == "RadPM")
+        motorCharacter.divisionFactor = (motorCharacter.FCPU * motorCharacter.radPMMax) / motorCharacter.freqMax;
+    if (mode == "RadPS")
+        motorCharacter.divisionFactor = (motorCharacter.FCPU * motorCharacter.radPSMax) / motorCharacter.freqMax;
+    
+    return motorCharacter.divisionFactor / value;
+}
 
-    else if (speed < previousValue + steps)
+void Smooth_Change_Speed(float speed)
+{
+    static SCS_Parameters param;
+    param.step = 60.0;
+    param.setSpeed = param.previousValue;
+    param.divStep = abs(speed - param.previousValue) / param.step;
+    if (speed > param.previousValue + param.step)
     {
-        setSpeed = previousValue;
-        divStep = (previousValue - speed) / steps;
-        for (uint8_t i = 0; i < divStep; i++)
+        for (uint8_t i = 0; i < param.divStep; i++)
         {
-            delay(20);
-            setSpeed += steps;
-            TIM3->ARR = Set_Speed(setSpeed);
+            delay(200);
+            param.setSpeed += param.step;
+            TIM3->ARR = Speed_Transformations(param.setSpeed, "RadPS");
+            ARRView = TIM3->ARR;
         }
-        setSpeed = 0;
+    }
+    else if (speed < param.previousValue - param.step)
+    {
+        for (uint8_t i = 0; i < param.divStep; i++)
+        {
+            delay(200);
+            param.setSpeed -= param.step;
+            TIM3->ARR = Speed_Transformations(param.setSpeed, "RadPS");
+            ARRView = TIM3->ARR;
+        }
     }
     else
     {
-        TIM3->ARR = Set_Speed(speed);
+        TIM3->ARR = Speed_Transformations(speed, "RadPS");
+        ARRView = TIM3->ARR;
     }
-    previousValue = speed;
+    param.setSpeed = 0;
+    param.previousValue = speed;
+    delay(5);
 }

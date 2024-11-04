@@ -1,18 +1,38 @@
 #include <init.h>
-#include "interrupt.h"
+#include <stdlib.h>
+#include <math.h>
 
-typedef struct{
+
+#define REVOLUTIONS_PER_MINUTE
+// #define RADIANS_PER_MINUTE
+// #define REVOLUTIONS_PER_SECOND
+// #define RADIANS_PER_SECOND
+// #define FREQUENCY
+
+typedef struct
+{
     float FCPU;
-    float maxFreq;
-    float rpsMax;
-    float coef;
-} Parameters;
+    float freqMax;
+    float revPSMax;
+    float revPMMax;
+    float divisionFactor;
+    float radPSMax;
+    float radPMMax;
+} MotorCharacteristics;
 
-typedef enum{
+typedef struct
+{
+    float previousValue;
+    float step;
+    float divStep;
+    float setSpeed;
+} SCS_Parameters;
+
+typedef enum
+{
     CHECK
 } MotorDriverConst;
 
-// uint16_t MotorTickCount;
-
-float Set_Speed(float rpm);
-void Smooth_Change_Speed(int speed);
+void Motor_Init(float rpmMax, float freqMax, float rpsMax);
+float Speed_Transformations(float value, char *mode);
+void Smooth_Change_Speed(float speed);
