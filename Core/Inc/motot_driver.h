@@ -2,13 +2,6 @@
 #include <stdlib.h>
 #include <math.h>
 
-
-#define REVOLUTIONS_PER_MINUTE
-// #define RADIANS_PER_MINUTE
-// #define REVOLUTIONS_PER_SECOND
-// #define RADIANS_PER_SECOND
-// #define FREQUENCY
-
 typedef struct
 {
     float FCPU;
