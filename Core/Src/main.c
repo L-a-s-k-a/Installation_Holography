@@ -20,7 +20,6 @@ int main(void)
 
     while (1)
     {
-        // TIM3->ARR = Set_Speed(speed);
-        Smooth_Change_Speed(speed);
+        Smooth_Change_Speed(speed, REV_PER_MIN);
     }
 }

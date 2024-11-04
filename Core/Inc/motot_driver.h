@@ -23,9 +23,12 @@ typedef struct
 
 typedef enum
 {
-    CHECK
-} MotorDriverConst;
+    REV_PER_MIN,
+    REV_PER_SEC,
+    RAD_PER_MIN,
+    RAD_PER_SEC
+} SCS_Mode;
 
 void Motor_Init(float rpmMax, float freqMax, float rpsMax);
-float Speed_Transformations(float value, char *mode);
-void Smooth_Change_Speed(float speed);
+float Speed_Transformations(float value, uint8_t mode);
+void Smooth_Change_Speed(float speed, uint8_t mode);

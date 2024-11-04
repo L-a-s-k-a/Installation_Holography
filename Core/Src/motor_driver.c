@@ -13,21 +13,21 @@ void Motor_Init(float rpmMax, float freqMax, float rpsMax)
     motorCharacter.radPSMax = rpsMax * 2 * M_PI;
 }
 
-float Speed_Transformations(float value, char *mode)
+float Speed_Transformations(float value, SCS_Mode mode)
 {
-    if (mode == "RevPM")
+    if (mode == REV_PER_MIN)
         motorCharacter.divisionFactor = (motorCharacter.FCPU * motorCharacter.revPMMax) / motorCharacter.freqMax;
-    if (mode == "RevPS")
+    if (mode == REV_PER_SEC)
         motorCharacter.divisionFactor = (motorCharacter.FCPU * motorCharacter.revPSMax) / motorCharacter.freqMax;
-    if (mode == "RadPM")
+    if (mode == RAD_PER_MIN)
         motorCharacter.divisionFactor = (motorCharacter.FCPU * motorCharacter.radPMMax) / motorCharacter.freqMax;
-    if (mode == "RadPS")
+    if (mode == RAD_PER_SEC)
         motorCharacter.divisionFactor = (motorCharacter.FCPU * motorCharacter.radPSMax) / motorCharacter.freqMax;
     
     return motorCharacter.divisionFactor / value;
 }
 
-void Smooth_Change_Speed(float speed)
+void Smooth_Change_Speed(float speed, SCS_Mode mode)
 {
     static SCS_Parameters param;
     param.step = 60.0;
@@ -39,7 +39,7 @@ void Smooth_Change_Speed(float speed)
         {
             delay(10);
             param.setSpeed += param.step;
-            TIM3->ARR = Speed_Transformations(param.setSpeed, "RadPS");
+            TIM3->ARR = Speed_Transformations(param.setSpeed, mode);
             ARRView = TIM3->ARR;
         }
     }
@@ -49,13 +49,13 @@ void Smooth_Change_Speed(float speed)
         {
             delay(10);
             param.setSpeed -= param.step;
-            TIM3->ARR = Speed_Transformations(param.setSpeed, "RadPS");
+            TIM3->ARR = Speed_Transformations(param.setSpeed, mode);
             ARRView = TIM3->ARR;
         }
     }
     else
     {
-        TIM3->ARR = Speed_Transformations(speed, "RadPS");
+        TIM3->ARR = Speed_Transformations(speed, mode);
         ARRView = TIM3->ARR;
     }
     param.setSpeed = 0;
