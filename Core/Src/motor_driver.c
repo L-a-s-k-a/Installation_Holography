@@ -37,7 +37,7 @@ void Smooth_Change_Speed(float speed)
     {
         for (uint8_t i = 0; i < param.divStep; i++)
         {
-            delay(200);
+            delay(10);
             param.setSpeed += param.step;
             TIM3->ARR = Speed_Transformations(param.setSpeed, "RadPS");
             ARRView = TIM3->ARR;
@@ -47,7 +47,7 @@ void Smooth_Change_Speed(float speed)
     {
         for (uint8_t i = 0; i < param.divStep; i++)
         {
-            delay(200);
+            delay(10);
             param.setSpeed -= param.step;
             TIM3->ARR = Speed_Transformations(param.setSpeed, "RadPS");
             ARRView = TIM3->ARR;
