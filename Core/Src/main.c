@@ -1,17 +1,14 @@
 #include "../Inc/init.h"
 #include "../Inc/interrupt.h"
-#include "motot_driver.h"
-#include "encoder.h"
+#include "../Inc/motorDriver.h"
+#include "../Inc/encoder.h"
 
 uint8_t BtnNum;
-uint16_t GlobalTickCount, TIMCount;
-uint8_t FLAG_Revolution;
+uint16_t GlobalTickCount;
 uint16_t ARRView;
-
-Encoder *encoderCalculation;
-SpeedCalculate *angularVelocity;
-
-float speed = 60.0;
+float FLAG_Revolution;
+float calculatePulseARR;
+float speed = 1.0, revolution = 1.0;
 
 int main(void)
 {
@@ -23,17 +20,12 @@ int main(void)
     TIM_ENCODER_Init();
     SystemInit();
 
-    Motor_Init(3000.0, 500000.0, 50.0);
+    Motor_Init(3000.0, 500000.0, 50.0, REV_PER_SEC);
 
     while (1)
     {
         ARRView = TIM3->ARR;
-        if(BtnNum) FLAG_Revolution = 0;
-        if (FLAG_Revolution <= 2){
-            Smooth_Change_Speed(speed, REV_PER_MIN);
-        }
-        else Smooth_Change_Speed(0, REV_PER_MIN);
-        // Smooth_Change_Speed(0, REV_PER_MIN);
-        // Angle_Transformations(360.0);
+        Set_Number_Of_Revolutions(revolution, speed, TIM3);
+        // Set_Smooth_Speed(speed, REV_PER_MIN);
     }
 }

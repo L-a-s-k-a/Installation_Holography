@@ -39,7 +39,7 @@ C_SOURCES =  \
 Core/Src/main.c \
 Core/Src/init.c \
 Core/Src/interrupt.c \
-Core/Src/motor_driver.c \
+Core/Src/motorDriver.c \
 Core/Src/encoder.c \
 Core/Src/system_stm32f4xx.c \
 

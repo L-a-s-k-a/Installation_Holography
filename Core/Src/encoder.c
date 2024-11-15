@@ -1,5 +1,8 @@
 #include "encoder.h"
 
+Encoder *encoderCalculation;
+SpeedCalculate *angularVelocity;
+
 void Encoder_Degree_Transformations(uint16_t encoderValue, uint16_t oneRevolution){
     encoderCalculation->degreePerRound = encoderValue / 360.0;
     encoderCalculation->degreeCalculate = oneRevolution * 360.0 + encoderCalculation->degreePerRound;

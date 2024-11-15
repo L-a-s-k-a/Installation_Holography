@@ -5,8 +5,8 @@
 
 extern uint16_t GlobalTickCount, MotorTickCount;
 extern uint16_t ENC_CNT, encItr;
-extern uint16_t TIMCount;
-extern uint8_t encDir, BtnNum, FLAG_Revolution;
+extern uint8_t encDir, BtnNum;
+extern float FLAG_Revolution;
 
 void EXTI15_10_IRQHandler(void);
 void SysTick_Handler(void);

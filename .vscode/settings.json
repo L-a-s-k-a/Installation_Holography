@@ -6,11 +6,8 @@
         "stdint.h": "c",
         "core_cm4.h": "c",
         "cmsis_version.h": "c",
-        "main.h": "c",
-        "demonstration.h": "c",
         "init.h": "c",
         "interrupt.h": "c",
-        "motot_driver.h": "c",
         "cmsis_gcc.h": "c",
         "cmsis_armcc.h": "c",
         "cmath": "c",
@@ -18,9 +15,24 @@
         "cstdlib": "c",
         "stdlib.h": "c",
         "math.h": "c",
-        "encoder.h": "c"
+        "encoder.h": "c",
+        "motordriver.h": "c",
+        "optional": "c",
+        "system_error": "c",
+        "array": "c",
+        "functional": "c",
+        "tuple": "c",
+        "type_traits": "c",
+        "utility": "c"
     },
     "C_Cpp.dimInactiveRegions": true,
     "cortex-debug.variableUseNaturalFormat": true,
-    "C_Cpp.errorSquiggles": "disabled"
+    "C_Cpp.errorSquiggles": "disabled",
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "d:\\Holography\\build",
+            "binaryPath": "d:\\Holography\\build\\Holography.elf",
+            "binaryArgs": []
+        }
+    ]
 }
