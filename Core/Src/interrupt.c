@@ -40,10 +40,10 @@ void TIM3_IRQHandler(void)
 {
     if (READ_BIT(TIM3->SR, TIM_SR_UIF))
     {
-        TIMCount += 100;
+        TIMCount += 10;
         if (TIMCount >= calculatePulseARR)
         {
-            FLAG_Revolution += 0.01;
+            FLAG_Revolution += 0.1;
             TIMCount = 0;
         }
         CLEAR_BIT(TIM3->SR, TIM_SR_UIF);

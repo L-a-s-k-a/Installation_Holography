@@ -9,6 +9,7 @@ uint16_t ARRView;
 float FLAG_Revolution;
 float calculatePulseARR;
 float speed = 1.0, revolution = 1.0;
+uint8_t alarm = 0;
 
 int main(void)
 {
@@ -25,7 +26,9 @@ int main(void)
     while (1)
     {
         ARRView = TIM3->ARR;
+        if(alarm) SET_BIT(GPIOB->BSRR, GPIO_BSRR_BS0);
+        else SET_BIT(GPIOB->BSRR, GPIO_BSRR_BR0);
         Set_Number_Of_Revolutions(revolution, speed, TIM3);
-        // Set_Smooth_Speed(speed, REV_PER_MIN);
+        Set_Smooth_Speed(speed, TIM3);
     }
 }

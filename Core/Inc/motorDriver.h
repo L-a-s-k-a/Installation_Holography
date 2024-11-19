@@ -49,6 +49,6 @@ extern float calculatePulseARR;
 void Motor_Init(float rpmMax, float freqMax, float rpsMax, Calc_Mode mode);
 float Speed_Transformation_In_ARR(float value);
 void Set_Number_Of_Revolutions(float revolution, float taskAngularVelocity, TIM_TypeDef *arrTIM);
-void Set_Smooth_Speed(float speed, TIM_TypeDef *arrTIM);
+void Set_Smooth_Speed(float speed, float step, TIM_TypeDef *arrTIM);
 
 #endif
